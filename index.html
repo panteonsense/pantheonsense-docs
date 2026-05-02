@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantheonsense — Documentation</title>
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pantheonsense — Documentation">
+    <meta property="og:description" content="Установка, настройка Discord-оверлея и запуск продуктов Pantheonsense.">
+    <meta property="og:image" content="logo.svg">
+    <meta property="og:site_name" content="Pantheonsense">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Pantheonsense — Documentation">
+    <meta name="twitter:description" content="Установка, настройка Discord-оверлея и запуск продуктов Pantheonsense.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink-0:   #000000;
+            --ink-1:   #050507;
+            --ink-2:   #0a0a0d;
+            --ink-3:   #101014;
+            --ink-4:   #15151b;
+            --ink-5:   #1c1c24;
+            --line:    #1f1f28;
+            --line-2:  #2a2a36;
+            --silver:  #d8d8df;
+            --silver-2:#a4a4b0;
+            --silver-3:#6e6e7a;
+            --silver-4:#42424c;
+            --white:   #ffffff;
+            --good:    #4ade80;
+            --warn:    #facc15;
+            --bad:     #f87171;
+            --info:    #60a5fa;
+            --grad-shine: linear-gradient(135deg,#ffffff 0%,#d8d8df 30%,#7a7a86 55%,#ffffff 80%,#cfcfd6 100%);
+            --grad-card:  linear-gradient(180deg,#13131a 0%,#0c0c10 100%);
+            --grad-bg:    radial-gradient(ellipse at top,#15151b 0%,#050507 60%,#000 100%);
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --shadow-1: 0 8px 32px rgba(0,0,0,0.6);
+            --shadow-glow: 0 0 40px rgba(255,255,255,0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--ink-0);
+            color: var(--silver);
+            line-height: 1.65;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Backdrop grid + spotlight */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(circle at 20% 0%, rgba(255,255,255,0.04), transparent 50%),
+                radial-gradient(circle at 80% 100%, rgba(255,255,255,0.025), transparent 50%),
+                var(--grad-bg);
+            z-index: -2;
+        }
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--silver-3); }
+
+        ::selection { background: rgba(255,255,255,0.18); color: var(--white); }
+
+        /* ========= LAYOUT ========= */
+        .shell { display: flex; min-height: 100vh; }
+
+        /* ========= SIDEBAR ========= */
+        .nav {
+            width: 290px;
+            position: fixed;
+            top: 0; left: 0;
+            height: 100vh;
+            background: rgba(5,5,7,0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-right: 1px solid var(--line);
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform .35s cubic-bezier(.4,0,.2,1);
+        }
+
+        .brand {
+            padding: 22px 22px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+        }
+        .brand::after {
+            content: '';
+            position: absolute; left: 22px; right: 22px; bottom: -1px; height: 1px;
+            background: linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
+        }
+
+        .brand-mark {
+            width: 42px; height: 42px;
+            border-radius: 11px;
+            background: var(--ink-0);
+            border: 1px solid var(--line-2);
+            display: grid; place-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.04);
+        }
+        .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
+        .brand-mark::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.22) 50%, transparent 65%);
+            transform: translateX(-100%);
+            animation: shimmer 6s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 60% { transform: translateX(-100%); }
+            85% { transform: translateX(120%); }
+            100% { transform: translateX(120%); }
+        }
+
+        .brand-text { display: flex; flex-direction: column; gap: 2px; }
+        .brand-name {
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            background: var(--grad-shine);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .brand-sub {
+            font-size: 10.5px;
+            color: var(--silver-3);
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .lang {
+            display: flex;
+            margin: 16px 18px 6px;
+            background: var(--ink-2);
+            border: 1px solid var(--line);
+            border-radius: var(--r-sm);
+            padding: 3px;
+        }
+        .lang button {
+            flex: 1;
+            padding: 7px 10px;
+            background: transparent;
+            border: none;
+            color: var(--silver-3);
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .25s;
+        }
+        .lang button:hover { color: var(--silver); }
+        .lang button.on {
+            background: var(--white);
+            color: var(--ink-0);
+            box-shadow: 0 2px 10px rgba(255,255,255,0.18);
+        }
+
+        .status {
+            margin: 10px 18px 4px;
+            padding: 9px 12px;
+            background: rgba(74,222,128,0.06);
+            border: 1px solid rgba(74,222,128,0.18);
+            border-radius: var(--r-sm);
+            display: flex; align-items: center; gap: 8px;
+            font-size: 11.5px;
+            font-weight: 500;
+            color: var(--good);
+            letter-spacing: .3px;
+        }
+        .status .pulse {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--good);
+            animation: dot 2s ease-in-out infinite;
+        }
+        @keyframes dot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+            50% { box-shadow: 0 0 0 5px rgba(74,222,128,0); }
+        }
+
+        .nav-list { padding: 14px 12px 30px; }
+        .group { margin-bottom: 4px; }
+        .group-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--silver-4);
+            padding: 16px 12px 8px;
+        }
+        .item {
+            display: flex; align-items: center; gap: 11px;
+            padding: 10px 12px;
+            color: var(--silver-2);
+            text-decoration: none;
+            font-size: 13.2px;
+            font-weight: 500;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            transition: all .2s;
+            position: relative;
+        }
+        .item:hover {
+            background: rgba(255,255,255,0.03);
+            color: var(--white);
+        }
+        .item.on {
+            background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+            color: var(--white);
+        }
+        .item.on::before {
+            content: '';
+            position: absolute; left: 0; top: 50%;
+            transform: translateY(-50%);
+            width: 3px; height: 18px;
+            background: var(--grad-shine);
+            border-radius: 0 3px 3px 0;
+        }
+        .item .ic {
+            width: 20px; height: 20px;
+            display: grid; place-items: center;
+            color: var(--silver-3);
+            flex-shrink: 0;
+        }
+        .item.on .ic { color: var(--white); }
+
+        .badge-soon {
+            margin-left: auto;
+            font-size: 9px;
+            padding: 2px 6px;
+            background: var(--ink-4);
+            border: 1px solid var(--line-2);
+            border-radius: 4px;
+            color: var(--silver-3);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* ========= MAIN ========= */
+        .main {
+            margin-left: 290px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: rgba(5,5,7,0.7);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+            padding: 12px 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 50;
+            gap: 18px;
+        }
+
+        .crumbs {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 12.5px;
+            color: var(--silver-3);
+            letter-spacing: .3px;
+        }
+        .crumbs span.sep { color: var(--silver-4); }
+        .crumbs span.cur { color: var(--silver); font-weight: 500; }
+
+        .find {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--ink-2);
+            border: 1px solid var(--line);
+            border-radius: var(--r-sm);
+            padding: 8px 14px;
+            width: 280px;
+            transition: all .25s;
+        }
+        .find:focus-within {
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+        }
+        .find input {
+            flex: 1;
+            background: none; border: none; outline: none;
+            color: var(--silver);
+            font-family: inherit;
+            font-size: 13px;
+        }
+        .find input::placeholder { color: var(--silver-4); }
+        .find svg { width: 14px; height: 14px; color: var(--silver-3); flex-shrink: 0; }
+
+        /* ========= CONTENT ========= */
+        .content {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 48px 38px 100px;
+        }
+
+        .page { display: none; animation: fadeUp .4s ease both; }
+        .page.on { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .head { margin-bottom: 36px; }
+        .head h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            color: var(--white);
+        }
+        .head h1 .accent {
+            background: var(--grad-shine);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .head .lead {
+            font-size: 15.5px;
+            color: var(--silver-2);
+            line-height: 1.6;
+            max-width: 680px;
+        }
+
+        h2 {
+            font-size: 21px;
+            font-weight: 600;
+            color: var(--white);
+            margin: 42px 0 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+            letter-spacing: -.3px;
+        }
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--silver);
+            margin: 26px 0 10px;
+        }
+        p { margin-bottom: 12px; font-size: 14.2px; color: var(--silver-2); }
+
+        a { color: var(--white); text-decoration: none; border-bottom: 1px solid var(--silver-4); transition: border-color .2s; }
+        a:hover { border-bottom-color: var(--white); }
+
+        strong { color: var(--white); font-weight: 600; }
+
+        /* ========= ALERTS ========= */
+        .alert {
+            display: flex; gap: 14px; align-items: flex-start;
+            padding: 16px 20px;
+            border-radius: var(--r-md);
+            margin: 18px 0;
+            font-size: 13.8px;
+            line-height: 1.6;
+            background: var(--ink-3);
+            border: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+        .alert::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: var(--silver-3);
+        }
+        .alert .dot {
+            font-size: 18px; line-height: 1; flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .alert.info::before  { background: var(--info); }
+        .alert.info  { background: rgba(96,165,250,0.06); border-color: rgba(96,165,250,0.18); color: #a8c8ff; }
+        .alert.warn::before  { background: var(--warn); }
+        .alert.warn  { background: rgba(250,204,21,0.05); border-color: rgba(250,204,21,0.18); color: #f1d875; }
+        .alert.bad::before   { background: var(--bad); }
+        .alert.bad   { background: rgba(248,113,113,0.05); border-color: rgba(248,113,113,0.2); color: #fca6a6; }
+        .alert.good::before  { background: var(--good); }
+        .alert.good  { background: rgba(74,222,128,0.05); border-color: rgba(74,222,128,0.18); color: #9ce8b6; }
+        .alert strong { color: inherit; filter: brightness(1.15); }
+        .alert a { color: inherit; border-bottom-color: currentColor; opacity: .9; }
+
+        /* ========= STEPS ========= */
+        .steps { counter-reset: stp; margin: 22px 0; }
+        .step {
+            counter-increment: stp;
+            position: relative;
+            padding: 20px 24px 20px 70px;
+            background: var(--grad-card);
+            border: 1px solid var(--line);
+            border-radius: var(--r-md);
+            margin-bottom: 12px;
+            font-size: 14.3px;
+            color: var(--silver-2);
+            line-height: 1.7;
+            transition: all .25s;
+        }
+        .step:hover {
+            border-color: var(--line-2);
+            transform: translateX(2px);
+            box-shadow: var(--shadow-1);
+        }
+        .step::before {
+            content: counter(stp, decimal-leading-zero);
+            position: absolute;
+            left: 18px; top: 18px;
+            width: 36px; height: 36px;
+            background: var(--ink-0);
+            border: 1px solid var(--line-2);
+            border-radius: var(--r-sm);
+            display: grid; place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--silver);
+            letter-spacing: -.5px;
+        }
+        .step:hover::before {
+            background: var(--white);
+            color: var(--ink-0);
+            border-color: var(--white);
+        }
+
+        kbd {
+            background: var(--ink-4);
+            border: 1px solid var(--line-2);
+            border-bottom: 2px solid var(--line-2);
+            border-radius: 5px;
+            padding: 1px 7px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .code {
+            background: var(--ink-1);
+            border: 1px solid var(--line);
+            border-radius: var(--r-sm);
+            padding: 14px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--silver);
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+
+        /* ========= ERROR ACCORDION ========= */
+        .err {
+            background: var(--grad-card);
+            border: 1px solid var(--line);
+            border-radius: var(--r-md);
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: all .2s;
+        }
+        .err:hover { border-color: var(--line-2); }
+        .err.open { border-color: rgba(255,255,255,0.2); box-shadow: var(--shadow-glow); }
+        .err-h {
+            padding: 15px 20px;
+            display: flex; align-items: center; gap: 14px;
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+        }
+        .err-h:hover { background: rgba(255,255,255,0.02); }
+        .err-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 9px;
+            background: var(--ink-0);
+            border: 1px solid var(--line-2);
+            color: var(--silver-2);
+            border-radius: 5px;
+            min-width: 38px;
+            text-align: center;
+        }
+        .err.open .err-tag { background: var(--white); color: var(--ink-0); border-color: var(--white); }
+        .err-t { flex: 1; font-size: 13.5px; color: var(--silver); font-weight: 500; }
+        .err-arr { color: var(--silver-4); font-size: 11px; transition: transform .25s; flex-shrink: 0; }
+        .err.open .err-arr { transform: rotate(90deg); color: var(--white); }
+        .err-b { display: none; padding: 0 20px 18px; border-top: 1px solid var(--line); }
+        .err.open .err-b { display: block; }
+        .err-b p { margin-top: 14px; }
+        .fix {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--good);
+            margin: 14px 0 8px;
+            padding: 4px 10px;
+            background: rgba(74,222,128,0.07);
+            border: 1px solid rgba(74,222,128,0.18);
+            border-radius: 5px;
+        }
+        .fix-list { list-style: none; padding: 0; }
+        .fix-list li {
+            position: relative;
+            padding: 6px 0 6px 22px;
+            font-size: 13.6px;
+            color: var(--silver-2);
+            line-height: 1.65;
+        }
+        .fix-list li::before {
+            content: '';
+            position: absolute; left: 4px; top: 14px;
+            width: 6px; height: 6px;
+            background: var(--white);
+            border-radius: 50%;
+        }
+        .err.search-hidden { display: none; }
+
+        /* ========= CARDS GRID ========= */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 26px 0;
+        }
+        .card {
+            background: var(--grad-card);
+            border: 1px solid var(--line);
+            border-radius: var(--r-md);
+            padding: 22px 20px;
+            text-align: left;
+            cursor: pointer;
+            transition: all .3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.05), transparent 40%);
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+        }
+        .card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+        .card:hover::after { opacity: 1; }
+        .card-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: var(--ink-0);
+            border: 1px solid var(--line-2);
+            display: grid; place-items: center;
+            margin-bottom: 14px;
+            color: var(--white);
+        }
+        .card-icon svg { width: 18px; height: 18px; }
+        .card-t { font-size: 14.5px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+        .card-d { font-size: 12.5px; color: var(--silver-3); line-height: 1.5; }
+
+        /* ========= DISCORD MOCKUP ========= */
+        .discord-mock {
+            margin: 22px 0;
+            background: #1e1f22;
+            border: 1px solid var(--line-2);
+            border-radius: var(--r-md);
+            overflow: hidden;
+            display: flex;
+            min-height: 290px;
+            font-family: 'gg sans','Space Grotesk',sans-serif;
+            box-shadow: var(--shadow-1);
+            position: relative;
+        }
+        .discord-mock::after {
+            content: 'DISCORD';
+            position: absolute;
+            top: 10px; right: 14px;
+            font-size: 9px;
+            color: rgba(255,255,255,0.18);
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .dm-side {
+            width: 220px;
+            background: #2b2d31;
+            padding: 18px 8px;
+            border-right: 1px solid #1a1b1e;
+        }
+        .dm-cat {
+            font-size: 11px;
+            color: #b5bac1;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 8px 10px 4px;
+        }
+        .dm-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 7px 10px;
+            border-radius: 4px;
+            font-size: 13.5px;
+            color: #b5bac1;
+            margin-bottom: 1px;
+            cursor: default;
+        }
+        .dm-row.act { background: #404249; color: #fff; }
+        .dm-row svg { width: 16px; height: 16px; flex-shrink: 0; opacity: .85; }
+        .dm-sub {
+            padding-left: 18px;
+            border-left: 2px solid transparent;
+        }
+        .dm-sub.cur { border-left-color: #fff; color: #fff; }
+        .dm-pane {
+            flex: 1;
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .dm-toggle-row {
+            background: #2b2d31;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .dm-toggle-text { flex: 1; }
+        .dm-toggle-title { font-size: 14px; font-weight: 600; color: #f2f3f5; margin-bottom: 3px; }
+        .dm-toggle-desc { font-size: 11.5px; color: #b5bac1; line-height: 1.4; }
+        .dm-switch {
+            width: 40px; height: 22px;
+            background: #80848e;
+            border-radius: 12px;
+            position: relative;
+            flex-shrink: 0;
+            transition: background .2s;
+        }
+        .dm-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px; left: 3px;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            transition: left .2s;
+        }
+        .dm-switch.on { background: #5865f2; }
+        .dm-switch.on::after { left: 21px; }
+        .dm-arrow { color: #b5bac1; font-size: 14px; opacity: .5; }
+        .dm-pill-good {
+            display: inline-block;
+            font-size: 10px;
+            background: #248046;
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            margin-left: 6px;
+        }
+        .dm-pill-bad {
+            display: inline-block;
+            font-size: 10px;
+            background: #80848e;
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            margin-left: 6px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--line-2), transparent);
+            margin: 36px 0;
+        }
+
+        .product-tile {
+            background: var(--grad-card);
+            border: 1px solid var(--line);
+            border-radius: var(--r-md);
+            padding: 22px 24px;
+            margin: 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: all .25s;
+        }
+        .product-tile:hover { border-color: var(--line-2); }
+        .product-tile.dim { opacity: .55; }
+        .product-tile-mark {
+            width: 46px; height: 46px;
+            border-radius: 11px;
+            background: var(--ink-0);
+            border: 1px solid var(--line-2);
+            display: grid; place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+        .product-tile-body { flex: 1; min-width: 0; }
+        .product-tile-name { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+        .product-tile-desc { font-size: 12.5px; color: var(--silver-3); }
+        .product-tile-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            padding: 4px 9px;
+            background: var(--ink-0);
+            border: 1px solid var(--line-2);
+            border-radius: 5px;
+            color: var(--silver-2);
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .product-tile-tag.live { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.25); color: var(--good); }
+
+        /* ========= MOBILE ========= */
+        .nav-toggle {
+            display: none;
+            position: fixed;
+            bottom: 22px; right: 22px;
+            width: 52px; height: 52px;
+            background: var(--white);
+            color: var(--ink-0);
+            border: none;
+            border-radius: 14px;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+        }
+        .scrim {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 99;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav { transform: translateX(-100%); }
+            .nav.open { transform: translateX(0); }
+            .scrim.open { display: block; }
+            .main { margin-left: 0; }
+            .nav-toggle { display: grid; place-items: center; }
+            .content { padding: 28px 20px 80px; }
+            .topbar { padding: 12px 20px; }
+            .find { width: 160px; }
+            .head h1 { font-size: 26px; }
+            .crumbs { font-size: 11.5px; }
+            .discord-mock { flex-direction: column; min-height: 0; }
+            .dm-side { width: 100%; border-right: none; border-bottom: 1px solid #1a1b1e; }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <!-- ============ NAV ============ -->
+        <aside class="nav" id="nav">
+            <div class="brand">
+                <div class="brand-mark"><img src="logo.svg" alt="PS"></div>
+                <div class="brand-text">
+                    <a href="#" class="brand-name">Pantheonsense</a>
+                    <span class="brand-sub" data-ru="Документация" data-en="Documentation">Документация</span>
+                </div>
+            </div>
+
+            <div class="lang">
+                <button class="on" onclick="setLang('ru')">RU</button>
+                <button onclick="setLang('en')">EN</button>
+            </div>
+
+            <div class="status">
+                <span class="pulse"></span>
+                <span data-ru="Все системы работают" data-en="All systems operational">Все системы работают</span>
+            </div>
+
+            <nav class="nav-list">
+                <div class="group">
+                    <div class="group-title" data-ru="Начало" data-en="Start">Начало</div>
+                    <a class="item on" data-page="welcome" onclick="go('welcome')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+                        </span>
+                        <span data-ru="Введение" data-en="Introduction">Введение</span>
+                    </a>
+                    <a class="item" data-page="prep" onclick="go('prep')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+                        </span>
+                        <span data-ru="Подготовка ПК" data-en="PC Preparation">Подготовка ПК</span>
+                    </a>
+                    <a class="item" data-page="discord" onclick="go('discord')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4a16 16 0 0 0-4-1l-.3.7a12 12 0 0 0-5.4 0L9 3a16 16 0 0 0-4 1C2.6 7.3 2 10.5 2.2 13.7A16 16 0 0 0 7 16l.9-1.4a10 10 0 0 1-1.7-.8M17 16a16 16 0 0 0 4.8-2.3c.3-3.7-.4-6.9-2.8-9.7M17.1 14.8a10 10 0 0 1-1.7.8L16 17"/><ellipse cx="9" cy="12" rx="1.2" ry="1.5"/><ellipse cx="15" cy="12" rx="1.2" ry="1.5"/></svg>
+                        </span>
+                        <span data-ru="Discord оверлей" data-en="Discord Overlay">Discord оверлей</span>
+                    </a>
+                </div>
+
+                <div class="group">
+                    <div class="group-title" data-ru="Продукты" data-en="Products">Продукты</div>
+                    <a class="item" data-page="rust-external" onclick="go('rust-external')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4 4 14l6 6L20 10z"/><path d="m14 4 6 6"/><path d="M9 9 6 12"/></svg>
+                        </span>
+                        <span>Rust External</span>
+                    </a>
+                </div>
+
+                <div class="group">
+                    <div class="group-title" data-ru="Помощь" data-en="Help">Помощь</div>
+                    <a class="item" data-page="errors" onclick="go('errors')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+                        </span>
+                        <span data-ru="Устранение ошибок" data-en="Troubleshooting">Устранение ошибок</span>
+                    </a>
+                    <a class="item" data-page="support" onclick="go('support')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.6-7.2"/><path d="m9 11 3 3 9-9"/></svg>
+                        </span>
+                        <span data-ru="Поддержка" data-en="Support">Поддержка</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="scrim" id="scrim" onclick="toggleNav()"></div>
+
+        <!-- ============ MAIN ============ -->
+        <main class="main">
+            <div class="topbar">
+                <div class="crumbs">
+                    <span>Pantheonsense</span>
+                    <span class="sep">/</span>
+                    <span class="cur" id="crumb" data-ru="Введение" data-en="Introduction">Введение</span>
+                </div>
+                <div class="find">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input id="findInput" type="text" data-placeholder-ru="Поиск по ошибкам..." data-placeholder-en="Search errors..." placeholder="Поиск по ошибкам..." oninput="search(this.value)">
+                </div>
+            </div>
+
+            <div class="content">
+
+                <!-- =========== WELCOME =========== -->
+                <section class="page on" id="page-welcome">
+                    <div class="head">
+                        <h1 data-ru="Документация <span class='accent'>Pantheonsense</span>" data-en="<span class='accent'>Pantheonsense</span> Documentation"></h1>
+                        <p class="lead" data-ru="Установка, настройка Discord-оверлея и пошаговый запуск продуктов Pantheonsense. Если что-то пошло не так — раздел «Устранение ошибок» закроет 90% вопросов." data-en="Installation, Discord overlay setup and step-by-step launch guide for Pantheonsense products. If something goes wrong — the Troubleshooting section covers 90% of cases."></p>
+                    </div>
+
+                    <div class="alert info">
+                        <span class="dot">⚡</span>
+                        <div data-ru="Впервые с нашим продуктом? Пройдите по порядку: <strong>Подготовка ПК</strong> → <strong>Discord оверлей</strong> → <strong>Запуск</strong>." data-en="First time? Follow in order: <strong>PC Preparation</strong> → <strong>Discord Overlay</strong> → <strong>Launch</strong>."></div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="card" onclick="go('prep')">
+                            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3 1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8 1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></div>
+                            <div class="card-t" data-ru="Подготовка ПК" data-en="PC Preparation"></div>
+                            <div class="card-d" data-ru="Защитник, антивирусы, чистка системы" data-en="Defender, antivirus, system cleanup"></div>
+                        </div>
+                        <div class="card" onclick="go('discord')">
+                            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4a16 16 0 0 0-4-1l-.3.7a12 12 0 0 0-5.4 0L9 3a16 16 0 0 0-4 1C2.6 7.3 2 10.5 2.2 13.7A16 16 0 0 0 7 16l.9-1.4a10 10 0 0 1-1.7-.8M17 16a16 16 0 0 0 4.8-2.3c.3-3.7-.4-6.9-2.8-9.7"/><ellipse cx="9" cy="12" rx="1.2" ry="1.5"/><ellipse cx="15" cy="12" rx="1.2" ry="1.5"/></svg></div>
+                            <div class="card-t" data-ru="Discord оверлей" data-en="Discord Overlay"></div>
+                            <div class="card-d" data-ru="Обязательная настройка для работы" data-en="Mandatory setup for cheat to work"></div>
+                        </div>
+                        <div class="card" onclick="go('rust-external')">
+                            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 9h7l-9 11 2-9H4z"/></svg></div>
+                            <div class="card-t">Rust External</div>
+                            <div class="card-d" data-ru="Запуск продукта — пошагово" data-en="Step-by-step launch guide"></div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h2 data-ru="Быстрый старт" data-en="Quick Start"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="<strong>Подготовьте ПК</strong> — отключите Защитник Windows, удалите антивирусы и сторонние анти-чит системы." data-en="<strong>Prepare your PC</strong> — disable Windows Defender, uninstall antivirus and third-party anti-cheat systems."></div>
+                        <div class="step" data-ru="<strong>Настройте Discord-оверлей</strong> — это обязательное требование. Без активного оверлея чит не запустится." data-en="<strong>Configure Discord overlay</strong> — this is mandatory. Without an active overlay the cheat won't run."></div>
+                        <div class="step" data-ru="<strong>Запустите продукт</strong> — следуйте инструкции из раздела нужного продукта." data-en="<strong>Launch the product</strong> — follow the instructions in the corresponding product section."></div>
+                    </div>
+
+                    <div class="alert warn">
+                        <span class="dot">⚠</span>
+                        <div data-ru="Если ваша ошибка не описана — пишите в <a href='https://t.me/' target='_blank'>техническую поддержку</a>." data-en="If your error is not listed — contact <a href='https://t.me/' target='_blank'>technical support</a>."></div>
+                    </div>
+                </section>
+
+                <!-- =========== PREP =========== -->
+                <section class="page" id="page-prep">
+                    <div class="head">
+                        <h1 data-ru="Подготовка <span class='accent'>компьютера</span>" data-en="<span class='accent'>PC</span> Preparation"></h1>
+                        <p class="lead" data-ru="Перед первым запуском нужно отключить службы и софт, которые мешают работе чита." data-en="Before the first launch you need to disable services and software that interfere with the cheat."></p>
+                    </div>
+
+                    <div class="alert bad">
+                        <span class="dot">●</span>
+                        <div data-ru="<strong>ОБЯЗАТЕЛЬНО</strong> выполните все пункты ниже перед первым запуском." data-en="<strong>MANDATORY</strong> — complete all steps below before the first launch."></div>
+                    </div>
+
+                    <h2 data-ru="Отключение защитных служб" data-en="Disabling Security Services"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="<strong>Отключите Защитник Windows</strong> — скачайте <a href='https://www.softportal.com/software-43861-defender-control.html' target='_blank'>Defender Control</a>, запустите от имени администратора и нажмите кнопку отключения. Кнопка должна стать <strong>красной</strong>." data-en="<strong>Disable Windows Defender</strong> — download <a href='https://www.softportal.com/software-43861-defender-control.html' target='_blank'>Defender Control</a>, run as administrator and click disable. The button should turn <strong>red</strong>."></div>
+                        <div class="step" data-ru="<strong>Удалите антивирусы</strong> — Kaspersky, Avast, Avira, ESET и аналогичные. Используйте официальные утилиты удаления от производителя." data-en="<strong>Uninstall antivirus software</strong> — Kaspersky, Avast, Avira, ESET, etc. Use official uninstall utilities from the vendor."></div>
+                        <div class="step" data-ru="<strong>Удалите анти-читы</strong> — Faceit, Riot Vanguard и аналогичные. Используйте <a href='https://www.softportal.com/software-6084-revo-uninstaller.html' target='_blank'>Revo Uninstaller</a> для полного удаления." data-en="<strong>Uninstall anti-cheats</strong> — Faceit, Riot Vanguard and similar. Use <a href='https://www.softportal.com/software-6084-revo-uninstaller.html' target='_blank'>Revo Uninstaller</a> for complete removal."></div>
+                        <div class="step" data-ru="<strong>Очистите папку Temp</strong> — удалите содержимое <span class='code' style='display:inline-block;padding:2px 8px;margin:0;font-size:12px;'>%TEMP%</span> через <kbd>Win</kbd> + <kbd>R</kbd>." data-en="<strong>Clear the Temp folder</strong> — delete contents of <span class='code' style='display:inline-block;padding:2px 8px;margin:0;font-size:12px;'>%TEMP%</span> via <kbd>Win</kbd> + <kbd>R</kbd>."></div>
+                        <div class="step" data-ru="<strong>Перезагрузите компьютер</strong> после выполнения всех действий." data-en="<strong>Restart your computer</strong> after completing all actions."></div>
+                    </div>
+
+                    <div class="alert info">
+                        <span class="dot">→</span>
+                        <div data-ru="После подготовки ПК переходите к разделу <strong>Discord оверлей</strong>." data-en="After PC preparation move on to <strong>Discord Overlay</strong>."></div>
+                    </div>
+                </section>
+
+                <!-- =========== DISCORD =========== -->
+                <section class="page" id="page-discord">
+                    <div class="head">
+                        <h1 data-ru="Discord <span class='accent'>оверлей</span>" data-en="Discord <span class='accent'>Overlay</span>"></h1>
+                        <p class="lead" data-ru="Для работы Pantheonsense обязательно требуется включённый Discord-оверлей. Без него чит не запустится." data-en="Pantheonsense requires Discord in-game overlay to be enabled. Without it the cheat won't run."></p>
+                    </div>
+
+                    <div class="alert bad">
+                        <span class="dot">●</span>
+                        <div data-ru="<strong>Не включайте «Устаревший оверлей»</strong> — он не поддерживается и приведёт к ошибкам." data-en="<strong>Do NOT enable 'Legacy Overlay'</strong> — it's not supported and will cause errors."></div>
+                    </div>
+
+                    <h2 data-ru="Шаг 1. Откройте настройки оверлея" data-en="Step 1. Open overlay settings"></h2>
+                    <p data-ru="В Discord откройте <strong>Настройки пользователя</strong> (шестерёнка рядом с ником) → раздел <strong>Настройки активности</strong> → <strong>Игровой оверлей</strong> → подпункт <strong>Обзор</strong>." data-en="In Discord open <strong>User Settings</strong> (gear icon next to your name) → <strong>Activity Settings</strong> → <strong>Game Overlay</strong> → <strong>Overview</strong>."></p>
+
+                    <!-- Discord sidebar mockup -->
+                    <div class="discord-mock">
+                        <div class="dm-side">
+                            <div class="dm-cat" data-ru="Настройки активности" data-en="Activity Settings">Настройки активности</div>
+                            <div class="dm-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                                <span data-ru="Конфиденциальность активности" data-en="Activity Privacy">Конфиденциальность активности</span>
+                            </div>
+                            <div class="dm-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 12h2M14 11v2M16 12h.01M11 12h.01"/></svg>
+                                <span data-ru="Зарегистрированные игры" data-en="Registered Games">Зарегистрированные игры</span>
+                            </div>
+                            <div class="dm-row act">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="6" y="8" width="12" height="8" rx="1"/></svg>
+                                <span data-ru="Игровой оверлей" data-en="Game Overlay">Игровой оверлей</span>
+                            </div>
+                            <div class="dm-row dm-sub cur" data-ru="Обзор" data-en="Overview">Обзор</div>
+                            <div class="dm-row dm-sub" data-ru="Голосовой виджет" data-en="Voice Widget">Голосовой виджет</div>
+                            <div class="dm-row dm-sub" data-ru="Уведомления" data-en="Notifications">Уведомления</div>
+                        </div>
+                        <div class="dm-pane">
+                            <div class="dm-toggle-row">
+                                <div class="dm-toggle-text">
+                                    <div class="dm-toggle-title">
+                                        <span data-ru="Включить оверлей" data-en="Enable in-game overlay">Включить оверлей</span>
+                                        <span class="dm-pill-good">ON</span>
+                                    </div>
+                                    <div class="dm-toggle-desc" data-ru="Воздушность. Скорость. Широкие возможности персонализации." data-en="Lightweight. Fast. Highly customisable."></div>
+                                </div>
+                                <div class="dm-switch on"></div>
+                                <span class="dm-arrow">›</span>
+                            </div>
+
+                            <div class="dm-toggle-row">
+                                <div class="dm-toggle-text">
+                                    <div class="dm-toggle-title">
+                                        <span data-ru="Включить устаревший оверлей" data-en="Enable legacy overlay">Включить устаревший оверлей</span>
+                                        <span class="dm-pill-bad">OFF</span>
+                                    </div>
+                                    <div class="dm-toggle-desc" data-ru="Устаревший оверлей доступен для всех поддерживаемых игр." data-en="Legacy overlay available for all supported games."></div>
+                                </div>
+                                <div class="dm-switch"></div>
+                                <span class="dm-arrow">›</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 data-ru="Шаг 2. Включите нужный переключатель" data-en="Step 2. Toggle the correct switch"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="<strong>«Включить оверлей»</strong> — переведите в положение <strong>ВКЛ</strong> (синий)." data-en="<strong>'Enable in-game overlay'</strong> — set to <strong>ON</strong> (blue)."></div>
+                        <div class="step" data-ru="<strong>«Включить устаревший оверлей»</strong> — оставьте <strong>ВЫКЛ</strong>. Это критически важно." data-en="<strong>'Enable legacy overlay'</strong> — keep it <strong>OFF</strong>. This is critical."></div>
+                        <div class="step" data-ru="<strong>Перезапустите Discord</strong> — закройте через трей (ПКМ → Quit Discord) и откройте заново." data-en="<strong>Restart Discord</strong> — close via tray (RMB → Quit Discord) and reopen."></div>
+                    </div>
+
+                    <h2 data-ru="Шаг 3. Проверка" data-en="Step 3. Verification"></h2>
+                    <p data-ru="Запустите любую поддерживаемую игру в режиме <strong>«Полноэкранный в окне»</strong> и нажмите <kbd>Shift</kbd> + <kbd>`</kbd> — должно появиться окно Discord-оверлея. Если появилось — всё настроено правильно." data-en="Launch any supported game in <strong>Fullscreen Windowed</strong> mode and press <kbd>Shift</kbd> + <kbd>`</kbd> — the Discord overlay window should appear. If it does — you're set."></p>
+
+                    <div class="alert good">
+                        <span class="dot">✓</span>
+                        <div data-ru="Discord-оверлей настроен. Переходите к запуску продукта." data-en="Discord overlay is configured. Proceed to product launch."></div>
+                    </div>
+                </section>
+
+                <!-- =========== RUST EXTERNAL =========== -->
+                <section class="page" id="page-rust-external">
+                    <div class="head">
+                        <h1><span class="accent">Pantheonsense</span> Rust External</h1>
+                        <p class="lead" data-ru="External-сборка для Rust. Пошаговая инструкция запуска." data-en="External build for Rust. Step-by-step launch guide."></p>
+                    </div>
+
+                    <div class="product-tile">
+                        <div class="product-tile-mark">RX</div>
+                        <div class="product-tile-body">
+                            <div class="product-tile-name">Rust External</div>
+                            <div class="product-tile-desc" data-ru="External — без инжекта в процесс игры" data-en="External — no injection into the game process"></div>
+                        </div>
+                        <span class="product-tile-tag live">Live</span>
+                    </div>
+
+                    <div class="alert warn">
+                        <span class="dot">⚠</span>
+                        <div data-ru="Убедитесь, что выполнили <strong>Подготовку ПК</strong> и настроили <strong>Discord-оверлей</strong>." data-en="Make sure you completed <strong>PC Preparation</strong> and configured <strong>Discord Overlay</strong>."></div>
+                    </div>
+
+                    <h2 data-ru="Перед запуском" data-en="Before launch"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="<strong>Запустите Discord</strong> и убедитесь, что игровой оверлей <strong>включён</strong> (см. раздел Discord оверлей)." data-en="<strong>Launch Discord</strong> and make sure in-game overlay is <strong>enabled</strong> (see Discord Overlay section)."></div>
+                        <div class="step" data-ru="<strong>Запустите Rust</strong>. В настройках видео установите режим окна <strong>«Полноэкранный в окне»</strong> (Borderless / Windowed Fullscreen)." data-en="<strong>Launch Rust</strong>. In video settings set window mode to <strong>Borderless / Windowed Fullscreen</strong>."></div>
+                        <div class="step" data-ru="<strong>Не закрывайте</strong> игру и Discord на следующем этапе." data-en="<strong>Do not close</strong> the game or Discord during the next step."></div>
+                    </div>
+
+                    <h2 data-ru="Запуск Pantheonsense" data-en="Launching Pantheonsense"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="<strong>Скачайте лоадер</strong> с личного кабинета, используя свой ключ." data-en="<strong>Download the loader</strong> from your dashboard using your key."></div>
+                        <div class="step" data-ru="<strong>Запустите лоадер</strong> от имени администратора. ПКМ → «Запустить от имени администратора»." data-en="<strong>Run the loader</strong> as administrator. RMB → 'Run as administrator'."></div>
+                        <div class="step" data-ru="В лоадере выберите <strong>Rust External</strong> и нажмите <strong>Start</strong>." data-en="In the loader pick <strong>Rust External</strong> and click <strong>Start</strong>."></div>
+                        <div class="step" data-ru="Дождитесь сообщения <strong>✓ Loaded</strong>. Лоадер сообщит о готовности." data-en="Wait for the <strong>✓ Loaded</strong> message. The loader will indicate readiness."></div>
+                        <div class="step" data-ru="Переключитесь в Rust. Меню чита открывается через <kbd>Insert</kbd>. Биндить кнопки можно прямо в меню." data-en="Switch to Rust. The cheat menu opens with <kbd>Insert</kbd>. Bind keys directly in the menu."></div>
+                    </div>
+
+                    <div class="alert good">
+                        <span class="dot">✓</span>
+                        <div data-ru="Готово. Если меню не открылось — проверьте раздел <strong>Устранение ошибок</strong>." data-en="Done. If the menu doesn't open — check the <strong>Troubleshooting</strong> section."></div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h2 data-ru="Скоро в Pantheonsense" data-en="Coming soon to Pantheonsense"></h2>
+                    <p data-ru="Список продуктов будет расширяться. По мере выхода новых сборок раздел будет пополняться отдельными инструкциями." data-en="The product line-up will expand. As new builds ship, dedicated launch guides will appear here."></p>
+
+                    <div class="product-tile dim">
+                        <div class="product-tile-mark">··</div>
+                        <div class="product-tile-body">
+                            <div class="product-tile-name" data-ru="Новые продукты" data-en="New products"></div>
+                            <div class="product-tile-desc" data-ru="Анонсы и инструкции — следите за обновлениями" data-en="Announcements and guides — stay tuned"></div>
+                        </div>
+                        <span class="product-tile-tag" data-ru="Скоро" data-en="Soon">Скоро</span>
+                    </div>
+                </section>
+
+                <!-- =========== ERRORS =========== -->
+                <section class="page" id="page-errors">
+                    <div class="head">
+                        <h1 data-ru="Устранение <span class='accent'>ошибок</span>" data-en="<span class='accent'>Troubleshooting</span>"></h1>
+                        <p class="lead" data-ru="Частые ошибки и проверенные решения. Поиск работает по заголовку, телу и номеру." data-en="Common errors and verified fixes. Search works by title, body and number."></p>
+                    </div>
+
+                    <h2 data-ru="Лоадер и запуск" data-en="Loader and launch"></h2>
+
+                    <div class="err" data-err="1">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#01</span>
+                            <span class="err-t" data-ru="Лоадер не запускается" data-en="Loader won't start"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Запустите лоадер <strong>от имени администратора</strong>." data-en="Run the loader <strong>as administrator</strong>."></li>
+                                <li data-ru="Переместите лоадер на <strong>диск C:</strong> в короткий путь без кириллицы." data-en="Move the loader to <strong>drive C:</strong> in a short path without Cyrillic."></li>
+                                <li data-ru="Установите <a href='https://go.microsoft.com/fwlink/p/?LinkId=2124703' target='_blank'>WebView2 Runtime</a>." data-en="Install <a href='https://go.microsoft.com/fwlink/p/?LinkId=2124703' target='_blank'>WebView2 Runtime</a>."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="2">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#02</span>
+                            <span class="err-t">Key not found / Invalid key</span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Проверьте: нет пробелов и лишних символов. Скопируйте ключ из личного кабинета и вставьте через <kbd>Ctrl</kbd> + <kbd>V</kbd>." data-en="Check: no spaces / extra characters. Copy the key from your dashboard and paste with <kbd>Ctrl</kbd> + <kbd>V</kbd>."></li>
+                                <li data-ru="Убедитесь, что ключ не истёк." data-en="Make sure the key has not expired."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="3">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#03</span>
+                            <span class="err-t" data-ru="Бесконечная загрузка" data-en="Infinite loading"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="<strong>Синхронизируйте время</strong> в настройках Windows." data-en="<strong>Sync time</strong> in Windows settings."></li>
+                                <li data-ru="Перезагрузите роутер." data-en="Restart your router."></li>
+                                <li data-ru="Смените DNS на Cloudflare:" data-en="Switch DNS to Cloudflare:"></li>
+                            </ul>
+                            <div class="code">1.1.1.1
+1.0.0.1</div>
+                        </div>
+                    </div>
+
+                    <h2 data-ru="Discord-оверлей" data-en="Discord overlay"></h2>
+
+                    <div class="err" data-err="10">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#10</span>
+                            <span class="err-t" data-ru="Чит не видит Discord-оверлей" data-en="Cheat does not detect Discord overlay"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Проверьте, что в Discord включён <strong>«Включить оверлей»</strong>, а <strong>«Устаревший оверлей»</strong> выключен." data-en="Confirm <strong>'Enable in-game overlay'</strong> is ON and <strong>'Legacy overlay'</strong> is OFF in Discord."></li>
+                                <li data-ru="Полностью закройте Discord через трей (ПКМ → Quit Discord) и запустите заново." data-en="Fully close Discord via tray (RMB → Quit Discord) and relaunch."></li>
+                                <li data-ru="Запускайте Discord <strong>от имени администратора</strong>." data-en="Run Discord <strong>as administrator</strong>."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="11">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#11</span>
+                            <span class="err-t" data-ru="Оверлей не появляется в игре по Shift + `" data-en="Overlay doesn't appear via Shift + ` in-game"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="В игре установите режим окна <strong>«Полноэкранный в окне»</strong>." data-en="Set the game window mode to <strong>Fullscreen Windowed</strong>."></li>
+                                <li data-ru="В Discord → Игровой оверлей → <strong>Зарегистрированные игры</strong>: добавьте процесс игры вручную." data-en="In Discord → Game Overlay → <strong>Registered Games</strong>: add the game process manually."></li>
+                                <li data-ru="Отключите аппаратное ускорение в Discord, перезапустите." data-en="Disable hardware acceleration in Discord and restart."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 data-ru="Игра и отображение" data-en="Game and display"></h2>
+
+                    <div class="err" data-err="20">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#20</span>
+                            <span class="err-t" data-ru="Меню чита не открывается" data-en="Cheat menu does not open"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Игра должна быть в режиме <strong>«Полноэкранный в окне»</strong>." data-en="The game must be in <strong>Fullscreen Windowed</strong> mode."></li>
+                                <li data-ru="Лоадер должен быть запущен <strong>до</strong> игры." data-en="The loader must be launched <strong>before</strong> the game."></li>
+                                <li data-ru="Попробуйте альтернативную клавишу — <kbd>Home</kbd>." data-en="Try the alternative key — <kbd>Home</kbd>."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="21">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#21</span>
+                            <span class="err-t" data-ru="Меню есть, но визуалов не видно" data-en="Menu opens but no visuals"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="В настройках чита включите визуалы и сохраните конфиг." data-en="Enable visuals in cheat settings and save the config."></li>
+                                <li data-ru="Проверьте, что Discord-оверлей активен." data-en="Verify the Discord overlay is active."></li>
+                                <li data-ru="Игра должна быть на <strong>основном мониторе</strong>." data-en="The game must run on the <strong>primary monitor</strong>."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 data-ru="Системные ошибки" data-en="System errors"></h2>
+
+                    <div class="err" data-err="30">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#30</span>
+                            <span class="err-t">WebView2 Runtime not found</span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Установите <a href='https://go.microsoft.com/fwlink/p/?LinkId=2124703' target='_blank'>WebView2 Runtime</a>, перезагрузите ПК." data-en="Install <a href='https://go.microsoft.com/fwlink/p/?LinkId=2124703' target='_blank'>WebView2 Runtime</a>, restart the PC."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="31">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#31</span>
+                            <span class="err-t">Visual C++ / LoadLibrary error</span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Установите <a href='https://aka.ms/vs/17/release/vc_redist.x64.exe' target='_blank'>Visual C++ Redistributable x64</a>." data-en="Install <a href='https://aka.ms/vs/17/release/vc_redist.x64.exe' target='_blank'>Visual C++ Redistributable x64</a>."></li>
+                                <li data-ru="Перезагрузите ПК и повторите запуск." data-en="Restart the PC and retry."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="32">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#32</span>
+                            <span class="err-t" data-ru="HVCI / Изоляция ядра включена" data-en="HVCI / Core Isolation enabled"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Отключите <strong>«Изоляция ядра»</strong> в Защитнике Windows → Безопасность устройства → Сведения об изоляции ядра." data-en="Disable <strong>'Core Isolation'</strong> in Windows Security → Device security → Core isolation details."></li>
+                                <li data-ru="Перезагрузите ПК." data-en="Restart the PC."></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="err" data-err="33">
+                        <div class="err-h" onclick="toggleErr(this)">
+                            <span class="err-tag">#33</span>
+                            <span class="err-t" data-ru="Antivirus blocked / Anticheat running" data-en="Antivirus blocked / Anticheat running"></span>
+                            <span class="err-arr">▶</span>
+                        </div>
+                        <div class="err-b">
+                            <div class="fix" data-ru="✓ Решение" data-en="✓ Fix"></div>
+                            <ul class="fix-list">
+                                <li data-ru="Удалите Faceit, Riot Vanguard, Kaspersky, Avast и другие защитные сервисы через <a href='https://www.softportal.com/software-6084-revo-uninstaller.html' target='_blank'>Revo Uninstaller</a>." data-en="Uninstall Faceit, Riot Vanguard, Kaspersky, Avast and other security services via <a href='https://www.softportal.com/software-6084-revo-uninstaller.html' target='_blank'>Revo Uninstaller</a>."></li>
+                                <li data-ru="Отключите Защитник через <a href='https://www.softportal.com/software-43861-defender-control.html' target='_blank'>Defender Control</a>." data-en="Disable Defender via <a href='https://www.softportal.com/software-43861-defender-control.html' target='_blank'>Defender Control</a>."></li>
+                                <li data-ru="Перезагрузите ПК." data-en="Restart the PC."></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- =========== SUPPORT =========== -->
+                <section class="page" id="page-support">
+                    <div class="head">
+                        <h1 data-ru="Поддержка <span class='accent'>24/7</span>" data-en="Support <span class='accent'>24/7</span>"></h1>
+                        <p class="lead" data-ru="Если ваша ошибка не описана в мануале или решение не помогло — мы на связи." data-en="If your error is not in the manual or the fix didn't help — we're here."></p>
+                    </div>
+
+                    <div class="alert info">
+                        <span class="dot">💬</span>
+                        <div data-ru="Telegram-поддержка: <a href='https://t.me/' target='_blank'><strong>@PantheonsenseSupport</strong></a>" data-en="Telegram support: <a href='https://t.me/' target='_blank'><strong>@PantheonsenseSupport</strong></a>"></div>
+                    </div>
+
+                    <h2 data-ru="Перед обращением" data-en="Before contacting"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="Убедитесь, что выполнили <strong>все пункты</strong> раздела «Подготовка ПК»." data-en="Make sure you completed <strong>all steps</strong> of the PC Preparation section."></div>
+                        <div class="step" data-ru="Проверьте <strong>Discord-оверлей</strong> — он включён, а устаревший выключен." data-en="Verify the <strong>Discord overlay</strong> — enabled, with legacy disabled."></div>
+                        <div class="step" data-ru="Поищите ошибку в разделе <strong>«Устранение ошибок»</strong> — возможно, решение уже описано." data-en="Search the <strong>Troubleshooting</strong> section — the fix may already be documented."></div>
+                        <div class="step" data-ru="Подготовьте: <strong>скриншот ошибки</strong>, версию Windows, название продукта (Rust External и т.д.)." data-en="Prepare: <strong>error screenshot</strong>, Windows version, product name (Rust External, etc.)."></div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="grid">
+                        <div class="card" onclick="window.open('https://t.me/','_blank')">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                            </div>
+                            <div class="card-t">Telegram</div>
+                            <div class="card-d" data-ru="Техническая поддержка 24/7" data-en="Technical support 24/7"></div>
+                        </div>
+                        <div class="card" onclick="window.open('https://discord.gg/','_blank')">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4a16 16 0 0 0-4-1l-.3.7a12 12 0 0 0-5.4 0L9 3a16 16 0 0 0-4 1C2.6 7.3 2 10.5 2.2 13.7A16 16 0 0 0 7 16l.9-1.4a10 10 0 0 1-1.7-.8M17 16a16 16 0 0 0 4.8-2.3c.3-3.7-.4-6.9-2.8-9.7"/><ellipse cx="9" cy="12" rx="1.2" ry="1.5"/><ellipse cx="15" cy="12" rx="1.2" ry="1.5"/></svg>
+                            </div>
+                            <div class="card-t">Discord</div>
+                            <div class="card-d" data-ru="Сообщество и обновления" data-en="Community and updates"></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <button class="nav-toggle" onclick="toggleNav()">☰</button>
+
+    <script>
+        let lang = 'ru';
+
+        function setLang(l) {
+            lang = l;
+            document.querySelectorAll('.lang button').forEach(b => b.classList.remove('on'));
+            document.querySelector(`.lang button[onclick="setLang('${l}')"]`).classList.add('on');
+            document.querySelectorAll('[data-ru]').forEach(el => {
+                const t = el.getAttribute(`data-${l}`);
+                if (t !== null) el.innerHTML = t;
+            });
+            const inp = document.getElementById('findInput');
+            inp.placeholder = inp.getAttribute(`data-placeholder-${l}`);
+            document.documentElement.lang = l;
+        }
+
+        function go(p) {
+            document.querySelectorAll('.page').forEach(s => s.classList.remove('on'));
+            const target = document.getElementById('page-' + p);
+            if (target) {
+                // re-trigger fade animation
+                target.style.animation = 'none';
+                void target.offsetWidth;
+                target.style.animation = '';
+                target.classList.add('on');
+            }
+            document.querySelectorAll('.item').forEach(l => l.classList.remove('on'));
+            const navEl = document.querySelector(`.item[data-page="${p}"]`);
+            if (navEl) navEl.classList.add('on');
+
+            const span = navEl ? navEl.querySelector('span:last-child') : null;
+            const cr = document.getElementById('crumb');
+            if (span) {
+                const ru = span.getAttribute('data-ru') || span.textContent;
+                const en = span.getAttribute('data-en') || span.textContent;
+                cr.setAttribute('data-ru', ru);
+                cr.setAttribute('data-en', en);
+                cr.innerHTML = lang === 'en' ? en : ru;
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('nav').classList.remove('open');
+            document.getElementById('scrim').classList.remove('open');
+        }
+
+        function toggleErr(h) {
+            h.closest('.err').classList.toggle('open');
+        }
+
+        function search(q) {
+            q = q.toLowerCase().trim();
+            // auto-jump to errors page if user starts typing while elsewhere
+            if (q && !document.getElementById('page-errors').classList.contains('on')) {
+                go('errors');
+                document.getElementById('findInput').focus();
+            }
+            document.querySelectorAll('.err').forEach(c => {
+                if (!q) { c.classList.remove('search-hidden'); c.classList.remove('open'); return; }
+                const t = c.querySelector('.err-t').textContent.toLowerCase();
+                const b = c.querySelector('.err-b').textContent.toLowerCase();
+                const n = c.getAttribute('data-err');
+                if (t.includes(q) || b.includes(q) || n === q || '#'+n === q || '#0'+n === q) {
+                    c.classList.remove('search-hidden');
+                    c.classList.add('open');
+                } else {
+                    c.classList.add('search-hidden');
+                }
+            });
+        }
+
+        function toggleNav() {
+            document.getElementById('nav').classList.toggle('open');
+            document.getElementById('scrim').classList.toggle('open');
+        }
+
+        // Card spotlight follow-cursor
+        document.querySelectorAll('.card').forEach(c => {
+            c.addEventListener('mousemove', e => {
+                const r = c.getBoundingClientRect();
+                c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+                c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+            });
+        });
+
+        setLang('ru');
+    </script>
+</body>
+</html>

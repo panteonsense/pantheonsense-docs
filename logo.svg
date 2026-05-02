@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="ps-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#e8e8ec"/>
+      <stop offset="55%" stop-color="#9a9aa3"/>
+      <stop offset="80%" stop-color="#f4f4f7"/>
+      <stop offset="100%" stop-color="#cfcfd6"/>
+    </linearGradient>
+    <linearGradient id="ps-shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </linearGradient>
+    <filter id="ps-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="28" fill="#000000"/>
+  <g filter="url(#ps-glow)" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="118" letter-spacing="-6">
+    <text x="20" y="138" fill="url(#ps-metal)">PS</text>
+    <path d="M 96 64 Q 120 88 96 112 L 132 112 L 132 64 Z" fill="url(#ps-shadow)" opacity="0.55"/>
+  </g>
+</svg>
