@@ -491,6 +491,38 @@
             overflow-x: auto;
         }
 
+        .dl-wrap {
+            margin: 28px 0;
+            text-align: center;
+        }
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 28px;
+            background: var(--white);
+            color: var(--ink-0);
+            border-radius: var(--r-md);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            border: 1px solid var(--white);
+            transition: all .2s;
+            box-shadow: var(--shadow-1);
+        }
+        .dl-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-2);
+            opacity: .95;
+        }
+        .dl-url {
+            margin-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--silver-3);
+            word-break: break-all;
+        }
+
         /* ========= ERROR ACCORDION ========= */
         .err {
             background: var(--grad-card);
@@ -844,6 +876,12 @@
                         </span>
                         <span data-ru="Discord оверлей" data-en="Discord Overlay">Discord оверлей</span>
                     </a>
+                    <a class="item" data-page="loader" onclick="go('loader')">
+                        <span class="ic">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </span>
+                        <span data-ru="Загрузчик" data-en="Loader">Загрузчик</span>
+                    </a>
                 </div>
 
                 <div class="group">
@@ -907,7 +945,7 @@
 
                     <div class="alert info">
                         <span class="dot">⚡</span>
-                        <div data-ru="Впервые с нашим продуктом? Пройдите по порядку: <strong>Подготовка ПК</strong> → <strong>Discord оверлей</strong> → <strong>Запуск</strong>." data-en="First time? Follow in order: <strong>PC Preparation</strong> → <strong>Discord Overlay</strong> → <strong>Launch</strong>."></div>
+                        <div data-ru="Впервые с нашим продуктом? Пройдите по порядку: <strong>Подготовка ПК</strong> → <strong>Discord оверлей</strong> → <strong>Загрузчик</strong> → <strong>Запуск</strong>." data-en="First time? Follow in order: <strong>PC Preparation</strong> → <strong>Discord Overlay</strong> → <strong>Loader</strong> → <strong>Launch</strong>."></div>
                     </div>
 
                     <div class="grid">
@@ -920,6 +958,11 @@
                             <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4a16 16 0 0 0-4-1l-.3.7a12 12 0 0 0-5.4 0L9 3a16 16 0 0 0-4 1C2.6 7.3 2 10.5 2.2 13.7A16 16 0 0 0 7 16l.9-1.4a10 10 0 0 1-1.7-.8M17 16a16 16 0 0 0 4.8-2.3c.3-3.7-.4-6.9-2.8-9.7"/><ellipse cx="9" cy="12" rx="1.2" ry="1.5"/><ellipse cx="15" cy="12" rx="1.2" ry="1.5"/></svg></div>
                             <div class="card-t" data-ru="Discord оверлей" data-en="Discord Overlay"></div>
                             <div class="card-d" data-ru="Обязательная настройка для работы" data-en="Mandatory setup for cheat to work"></div>
+                        </div>
+                        <div class="card" onclick="go('loader')">
+                            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                            <div class="card-t" data-ru="Загрузчик" data-en="Loader"></div>
+                            <div class="card-d" data-ru="Скачать и установить лоадер" data-en="Download and install the loader"></div>
                         </div>
                         <div class="card" onclick="go('rust-full')">
                             <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 9h7l-9 11 2-9H4z"/></svg></div>
@@ -1053,7 +1096,51 @@
 
                     <div class="alert good">
                         <span class="dot">✓</span>
-                        <div data-ru="Discord-оверлей настроен. Переходите к запуску продукта." data-en="Discord overlay is configured. Proceed to product launch."></div>
+                        <div data-ru="Discord-оверлей настроен. Переходите к <strong>Загрузчику</strong> или запуску продукта." data-en="Discord overlay is configured. Proceed to the <strong>Loader</strong> or product launch."></div>
+                    </div>
+                </section>
+
+                <!-- =========== LOADER =========== -->
+                <section class="page" id="page-loader">
+                    <div class="head">
+                        <h1 data-ru="<span class='accent'>Pantheonsense</span> Загрузчик" data-en="<span class='accent'>Pantheonsense</span> Loader"></h1>
+                        <p class="lead" data-ru="Скачайте и установите официальный лоадер Pantheonsense перед запуском любого продукта." data-en="Download and install the official Pantheonsense loader before launching any product."></p>
+                    </div>
+
+                    <div class="product-tile">
+                        <div class="product-tile-mark">LD</div>
+                        <div class="product-tile-body">
+                            <div class="product-tile-name" data-ru="Загрузчик" data-en="Loader">Загрузчик</div>
+                            <div class="product-tile-desc" data-ru="Официальная страница загрузки" data-en="Official download page"></div>
+                        </div>
+                        <span class="product-tile-tag live">Live</span>
+                    </div>
+
+                    <div class="dl-wrap">
+                        <a class="dl-btn" href="https://pantheonsense.syringe.dev/download" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span data-ru="Скачать загрузчик" data-en="Download Loader">Скачать загрузчик</span>
+                        </a>
+                        <div class="dl-url">https://pantheonsense.syringe.dev/download</div>
+                    </div>
+
+                    <h2 data-ru="Установка" data-en="Installation"></h2>
+
+                    <div class="steps">
+                        <div class="step" data-ru="Нажмите кнопку <strong>«Скачать загрузчик»</strong> выше или перейдите по ссылке <a href='https://pantheonsense.syringe.dev/download' target='_blank' rel='noopener noreferrer'>pantheonsense.syringe.dev/download</a>." data-en="Click the <strong>Download Loader</strong> button above or open <a href='https://pantheonsense.syringe.dev/download' target='_blank' rel='noopener noreferrer'>pantheonsense.syringe.dev/download</a>."></div>
+                        <div class="step" data-ru="Скачайте лоадер и сохраните в <strong>короткий путь на диске C:</strong> без кириллицы в названии папки." data-en="Download the loader and save it to a <strong>short path on drive C:</strong> without Cyrillic in the folder name."></div>
+                        <div class="step" data-ru="Запустите лоадер <strong>от имени администратора</strong>. ПКМ → «Запустить от имени администратора»." data-en="Run the loader <strong>as administrator</strong>. RMB → 'Run as administrator'."></div>
+                        <div class="step" data-ru="Введите ключ из личного кабинета, выберите нужный продукт и нажмите <strong>Start</strong> — дальше следуйте инструкции в разделе продукта." data-en="Enter your key from the dashboard, select the product and click <strong>Start</strong> — then follow the guide in the product section."></div>
+                    </div>
+
+                    <div class="alert info">
+                        <span class="dot">⚡</span>
+                        <div data-ru="Перед первым запуском лоадера выполните <strong>Подготовку ПК</strong> и настройте <strong>Discord-оверлей</strong>." data-en="Before the first launch complete <strong>PC Preparation</strong> and configure <strong>Discord Overlay</strong>."></div>
+                    </div>
+
+                    <div class="alert good">
+                        <span class="dot">✓</span>
+                        <div data-ru="Лоадер установлен? Переходите к разделу нужного продукта: <strong>Rust Full</strong>, <strong>Rust Lite</strong> или <strong>Rust Chams</strong>." data-en="Loader ready? Open the product section: <strong>Rust Full</strong>, <strong>Rust Lite</strong> or <strong>Rust Chams</strong>."></div>
                     </div>
                 </section>
 
